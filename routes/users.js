@@ -7,7 +7,7 @@ const File = require('../models/file');
 const {isLoggedIn} = require('../middleware');
 
 router.get('/signup', (req, response) => {
-    response.render('users/signup');
+    response.render('users/signup', {user: new User()});
 });
 
 router.post('/signup', catchAynsc ( async( req, response, next) => {
@@ -18,11 +18,13 @@ router.post('/signup', catchAynsc ( async( req, response, next) => {
         await User.register(userNew, password);
         await userNew.save();
         req.flash('success','WELCOME TO HARMONISATION PROJECT');
-        response.redirect('myProfile/myProfile'); 
+        response.redirect(`myProfile/myProfile${userNew._id}`); 
 
     }catch (e) {
         req.flash('error', e.message);
-        response.redirect('signup');
+        response.render('signup', {
+            userNew: userNew
+        });
     }
 }));
 
@@ -36,12 +38,6 @@ router.post('/login', passport.authenticate('local', {failureFlash:true, failure
     delete req.session.returnTo;
     response.redirect(redirectUrl);
 });
-
-
-router.get('/myProfile' ,isLoggedIn,catchAynsc( async (request, response) => {
-    const user = await User.find({});
-    response.render('myProfile/myProfile', {user});
-})); 
 
 router.get('/myProfile/:id', isLoggedIn, catchAynsc(async (req, response) => {
     const user = await User.findById(req.params.id)
@@ -64,5 +60,18 @@ router.delete('/myProfile/:id', isLoggedIn,catchAynsc(async (request, response) 
     await User.findByIdAndDelete(id);
     response.redirect('/users/login');
 }));
+
+
+/**
+ * include in get all files which is 
+ * include the search variable 
+ * let searchOptions = {} 
+ * if (req.query.name != null && req.query.name != ''){
+ *  searchOptions.name = new RegExp(req.query.name, 'i');
+ * }
+ * res.render('myProfile/myProfile', {files: files,
+ *               searchOptions: req.query});
+ * in the File.find(searchOptions)
+ *  */
 
 module.exports = router;

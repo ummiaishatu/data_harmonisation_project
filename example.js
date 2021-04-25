@@ -16,7 +16,7 @@ const UserSchema = require('./models/User');
 const UsersRoutes = require('./routes/users');
 const HomeRoutes = require('./routes/route'); 
 const LogoutRoutes = require('./routes/logout');
-const FileRoutes = require('./routes/files-2');
+const FileRoutes = require('./routes/files');
 const bodyParser = require('body-parser');
 const mongoSanitize = require('express-mongo-sanitize');
 
@@ -43,8 +43,9 @@ app.use(mongoSanitize({
 
 //public folder
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static('/uploads'));
 app.use(express.urlencoded({extended: true}));
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({limit: '50mb',extended: false}));
 app.use(express.json());
 
 const sessionConfig = {
