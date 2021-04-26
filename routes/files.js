@@ -8,8 +8,8 @@ const path = require('path');
 const fs = require('fs');
 const catchAsync = require('../utils/catchAsync');
 const User = require('../models/User');
-//const csv = require('csv-parser');
-const {isLoggedIn} = require('../middleware');
+const csv = require('csv-parser');
+//const {isLoggedIn} = require('../middleware');
 
 const storage =  multer.diskStorage({
     destination: (req, file, cb) =>{ 
@@ -22,7 +22,7 @@ const storage =  multer.diskStorage({
         File.create({filePath})
             .then(() => {
                  cb(null, filePath);
-            })
+            })   
     }
 });
 
@@ -52,12 +52,21 @@ router.post('/uploads', catchAsync(async (req,response) => {
                 msg: error
             });
         }else{
-            //console.log(req.file);
-            if(req.file == undefined){
+            const file = req.file.path;
+            //console.log(file);
+            if(file == undefined){
                 response.render('myProfile/myProfile', {
                     msg: 'Error: No File Selected'
                 });
             }else{
+                const result = [];
+                fs.createReadStream(file)
+                    .pipe(csv())
+                    .on('data', (data) => result.push(data))
+                    .on('end' ,() => {
+                        console.log(result);
+                        //console.table(result);
+                     }); 
                 response.render('myProfile/myProfile', {
                     msg: 'File Uploaded Successfully',
                     //file= `uploads/${req.file.filename}`
@@ -68,25 +77,40 @@ router.post('/uploads', catchAsync(async (req,response) => {
 }));
 
 router.get('/uploads', catchAsync(async( req, res) => {
-    res.redirect('myProfile');
+    res.render('myProfile/myProfile');
 }));
 
 router.get('/myProfile', catchAsync (async  (req, res) => {
-    let query = File.find();
-    if(req.query.filePath != null && req.query.filePath == ''){
-        query = query.regex('filePath', new RegExp(req.query.filePath, 'i'));
-    }
     try {
-        const files = await query.exec();
+        const files = await File.find();
         const user = await User.find();
         res.render('myProfile/myProfile', {
                     user: user,
                     file: files,
-                    searchOption: req.query
                 });
     }catch{
-        res.redirect('/myProfile');
+        //res.redirect('/myProfile');
     }
 }));
+
+function displayHTMLTable(results){
+    var table = "<table class='table'>";
+    var data = results.data;
+
+    for(i=0;i< data.length ;i++){
+        table+="<tr>";
+        var row = data[i];
+        var cells = row.join(",").split(",");
+        
+        for(j=0; j< cells.length ;j++){
+            table+= "<td>";
+            table+= cells[j];
+            table+= "</td>";    
+        }
+        table+= "</tr>";
+    }
+    table+= "</table>";
+    $("#parsed_csv_list").html(table);
+};
 
 module.exports = router;

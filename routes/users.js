@@ -18,7 +18,7 @@ router.post('/signup', catchAynsc ( async( req, response, next) => {
         await User.register(userNew, password);
         await userNew.save();
         req.flash('success','WELCOME TO HARMONISATION PROJECT');
-        response.redirect(`myProfile/myProfile${userNew._id}`); 
+        response.redirect(`myProfile/myProfile`); 
 
     }catch (e) {
         req.flash('error', e.message);
