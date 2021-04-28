@@ -1,77 +1,63 @@
+/**
+ * @filename users.js
+ * @creationdate 30-03-21
+ * @lastModifiied 28-04-21
+ * @author Ummi Aishatu Ibrahim 
+ * @version 1.0 
+ * @purpose   * This is where the resgistration of new user 
+ * and logging in of old user takes place 
+ */
 const express = require("express");
 const passport = require('passport');
 const router = express.Router();
 const catchAynsc = require('../utils/catchAsync');
 const User = require('../models/User');
-const File = require('../models/file');
-const {isLoggedIn} = require('../middleware');
 
+/**
+ * @GET method 
+ * this gets the signup page
+ */
 router.get('/signup', (req, response) => {
-    response.render('users/signup', {user: new User()});
+    response.render('users/signup');
 });
 
-router.post('/signup', catchAynsc ( async( req, response, next) => {
+/**
+ * @POST method 
+ * this is where the registering for the user takes place 
+ * after registering it then sends the user back to login 
+ * to confirm his / her details. 
+ */
+router.post('/signup', catchAynsc ( async( request, response, next) => {
     try{
-        const {username,first,last,email,number,password} = req.body;
-        //eval(require('locus'));
+        const {username,first,last,email,number,password} = request.body;
         const userNew = new User ({username,first,last, email, number});
         await User.register(userNew, password);
-        await userNew.save();
-        req.flash('success','WELCOME TO HARMONISATION PROJECT');
-        response.redirect(`myProfile/myProfile`); 
-
     }catch (e) {
-        req.flash('error', e.message);
-        response.render('signup', {
-            userNew: userNew
-        });
+        request.flash('error', e.message);
+        //console.log(e);
+        response.redirect('signup');
     }
+    request.flash('success','WELCOME TO HARMONISATION PROJECT');
+    response.redirect('myProfile'); 
 }));
 
+/**
+ * @GET method 
+ * this gets the login page
+ */
 router.get('/login', (req, response) => {
     response.render('users/login')
 });
 
+/**
+ * @POST method 
+ * this is where the user logins and be redirected to the profile page.  
+ */
 router.post('/login', passport.authenticate('local', {failureFlash:true, failureRedirect: '/login'}), (req, response) => {
     req.flash('success', 'WELCOME BACK!!!');
     const redirectUrl = req.session.returnTo || '/myProfile';
     delete req.session.returnTo;
     response.redirect(redirectUrl);
 });
-
-router.get('/myProfile/:id', isLoggedIn, catchAynsc(async (req, response) => {
-    const user = await User.findById(req.params.id)
-    response.render('myProfile/account', {user});
-}));
-
-router.get('/myProfile/:id/edit', isLoggedIn,catchAynsc( async (request, response) => {
-    const user = await User.findById(request.params.id);
-    response.render('myProfile/editProfile', {user});
-}));
-
-router.put('/myProfile/:id' , isLoggedIn,catchAynsc(async (request, response) => {
-    const {id} = request.params;
-    const user = await User.findByIdAndUpdate(id, {...request.body.user});
-    response.redirect(`/myProfile/${user._id}`);
-}));
-
-router.delete('/myProfile/:id', isLoggedIn,catchAynsc(async (request, response) => {
-    const {id} = request.params;
-    await User.findByIdAndDelete(id);
-    response.redirect('/users/login');
-}));
-
-
-/**
- * include in get all files which is 
- * include the search variable 
- * let searchOptions = {} 
- * if (req.query.name != null && req.query.name != ''){
- *  searchOptions.name = new RegExp(req.query.name, 'i');
- * }
- * res.render('myProfile/myProfile', {files: files,
- *               searchOptions: req.query});
- * in the File.find(searchOptions)
- *  */
 
 module.exports = router;

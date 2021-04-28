@@ -1,3 +1,12 @@
+<!--
+/**
+ * @filename home.ejs
+ * @creationdate 2-02-21
+ * @lastModifiied 28-04-21
+ * @author Ummi Aishatu Ibrahim 
+ * @version 1.0 
+ * @purpose  this is home page 
+-->
 <%- include('./partials/head'); %> 
     <body class="d-flex flex-column vh-100">
         <main>
@@ -13,6 +22,7 @@
                         </button>
                         <div class="collapse navbar-collapse" id="navbarcollapse">
                             <div class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <!--if the current user is not logged in only show this sections-->
                                 <% if(!currentUser) {%> 
                                 <a href="/" class="nav-item nav-link">Home</a>
                                 <a href="#sectionAbout" class="nav-item nav-link">About</a>
@@ -20,6 +30,7 @@
                                 <a href="#services" class="nav-item nav-link">Services</a>
                                 <button class="btn btn-success btn-lg" onclick="window.location.href = '/login';" >Get Started</button>
                                 <% }else{%> 
+                                    <!--else show a path to the profile page and log out button-->
                                 <a href="/myProfile" class="nav-item nav-link">Profile</a>
                                 <a href="/logout" class="nav-item nav-link">log out</a>
                                 <% } %> 
@@ -105,7 +116,7 @@
                                 can be small and it can still get the work done.
                             </p>
                             <p id="ha2" class="lead">
-                                The services include steps such as uploading data, harmonising and finally exporting data. it then results to an organised and presentable data.
+                                The services include steps such as uploading data and harmonising it then results to an organised and presentable data.
                             </p>
                         </div>
                     </div>
@@ -119,8 +130,8 @@
                             </div>
                             <div>
                                 <p>
-                                    vhefycdkmljhvgcfxchvjbkljhgcfxchjvkhl
-                                    ghjkljhgfchjvkl;kjhgvbhjkljhg
+                                    This is where you upload your data, 
+                                    The only data file that can be uploaded is a CSV file.
                                 </p>
                             </div>
                         </div>
@@ -130,22 +141,11 @@
                             </div>
                             <div>
                                 <p>
-                                    vhefycdkmljhvgcfxchvjbkljhgcfxchjvkhl
-                                    ghjkljhgfchjvkl;kjhgvbhjkljhg
+                                    The website does everything for you, 
+                                    all you have to do is just register an account or 
+                                    log in then upload your CSV data file and click the filpath
+                                    to display of your well organised data file. 
                                 </p>
-                                
-                            </div>
-                        </div>
-                        <div class="col-md border shadow-lg bg-success border-success mb-2 order-3">
-                            <div>
-                                <h3 id="h31">EXPORT</h3>
-                            </div>
-                            <div>
-                                <p>
-                                    vhefycdkmljhvgcfxchvjbkljhgcfxchjvkhl
-                                    ghjkljhgfchjvkl;kjhgvbhjkljhg
-                                </p>
-                                
                             </div>
                         </div>
                     </div>
@@ -161,8 +161,7 @@
                                     </div>
                                     <div>
                                         <p>
-                                            vhefycdkmljhvgcfxchvjbkljhgcfxchjvkhl
-                                            ghjkljhgfchjvkl;kjhgvbhjkljhg
+                                            Helps to save time 
                                         </p>
                                     </div>
                                 </div>
@@ -172,19 +171,7 @@
                                     </div>
                                     <div>
                                         <p>
-                                            vhefycdkmljhvgcfxchvjbkljhgcfxchjvkhl
-                                            ghjkljhgfchjvkl;kjhgvbhjkljhg
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="col p-2 border shadow-lg bg-light border-success">
-                                    <div>
-                                        <h4>Data Redundancy</h4>
-                                    </div>
-                                    <div>
-                                        <p>
-                                            vhefycdkmljhvgcfxchvjbkljhgcfxchjvkhl
-                                            ghjkljhgfchjvkl;kjhgvbhjkljhg
+                                            Gives a presentable and organised data file 
                                         </p>
                                     </div>
                                 </div>
@@ -194,8 +181,7 @@
                                     </div>
                                     <div>
                                         <p>
-                                            vhefycdkmljhvgcfxchvjbkljhgcfxchjvkhl
-                                            ghjkljhgfchjvkl;kjhgvbhjkljhg
+                                            Removes all files that are duplicates. 
                                         </p>
                                     </div>
                                 </div>

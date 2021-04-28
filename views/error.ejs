@@ -1,3 +1,12 @@
+<!--
+/**
+ * @filename error.ejs
+ * @creationdate 2-02-21
+ * @lastModifiied 28-04-21
+ * @author Ummi Aishatu Ibrahim 
+ * @version 1.0 
+ * @purpose  this is for catching errors that displaying on the web page 
+-->
 <%- include('./partials/head'); %> 
 <body class="d-flex flex-column vh-100">
     <main>
@@ -13,12 +22,14 @@
                     </button>
                     <div class="collapse navbar-collapse" id="navbarcollapse">
                         <div class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <!--if the current user is not logged in only show this sections-->
                             <% if(!currentUser) {%> 
                             <a href="/" class="nav-item nav-link">Home</a>
                             <a href="#sectionAbout" class="nav-item nav-link">About</a>
                             <a href="#contact" class="nav-item nav-link">Contact</a>
                             <a href="#services" class="nav-item nav-link">Services</a>
                             <button class="btn btn-success btn-lg" onclick="window.location.href = '/login';" >Get Started</button>
+                            <!--else show a path to the profile page and log out button-->
                             <% }else{%> 
                             <a href="/myProfile" class="nav-item nav-link">Profile</a>
                             <a href="/logout" class="nav-item nav-link">log out</a>
@@ -32,6 +43,7 @@
             <div class="row" id="alert">
                 <div class="col-8 offset-2">
                     <div class="alert alert-danger"  role="alert">
+                        <!--stack the errors and show them -->
                         <h4 class="alert-heading"><%= error.message%></h4>
                         <p><%= error.stack %></p>
                     </div>

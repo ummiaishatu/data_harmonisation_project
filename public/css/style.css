@@ -1,3 +1,8 @@
+/**
+This is the general style for all the documents for the website
+However, boostrap is included as well. 
+*/
+
 body{
     background-color: #14213d;
     font-family: 'Courier New', Courier, monospace
@@ -311,7 +316,6 @@ button{
 #table{
     background-color: #007f5f;
     color: white;
-}
 }
 
 #harmonise{

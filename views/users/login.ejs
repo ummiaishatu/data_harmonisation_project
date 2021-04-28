@@ -1,3 +1,12 @@
+<!--
+/**
+ * @filename login.ejs
+ * @creationdate 2-02-21
+ * @lastModifiied 28-04-21
+ * @author Ummi Aishatu Ibrahim 
+ * @version 1.0 
+ * @purpose  the login page 
+-->
 <%- include('../partials/head'); %> 
     <body class="d-flex flex-column vh-100">
         <main>
@@ -39,12 +48,14 @@
                         </div>
                         <button class="btn btn-success btn-lg" type="submit" id="login">LOGIN</button>
                         <!--include the page for reseting passowrd-->
-                        <p class="form__text mt-1"><a href="#" class="form__link">Forgot Password? </a></p>
                         <p class="form__text mb-1"><a href="signup" class="form__link">Don't have an account? Sign Up</a></p>
                     </form>
                 </div>
             </div>
         </main>
+        <!--
+            checks for validation
+        -->
         <script>
             (function () {
                 'use strict'

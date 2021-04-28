@@ -1,3 +1,13 @@
+/**
+ * @filename User.js
+ * @creationdate 19-04-21
+ * @lastModifiied 28-04-21
+ * @author Ummi Aishatu Ibrahim 
+ * @version 1.0 
+ * @purpose  * This is the model for user, the login and the signup page both use 
+ * the same model
+ * where the user credentials are stored
+ */
 const passportLocalMongoose = require('passport-local-mongoose');
 
 const mongoose = require('mongoose');
@@ -6,33 +16,27 @@ const Schema = mongoose.Schema;
 const UserSchema = new Schema({
     username: {
         type: String, 
-        unique: true,
         required: true 
     },
     first: {
         type: String, 
-        unique: true,
         required: true  
     },
     last: {
         type: String, 
-        unique: true,
         required: true  
     },
     email: {
         type: String, 
-        unique: true,
         required: true 
     },
     number: {
         type: Number, 
-        unique: true,
         required: true 
     },
     files: {
         type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        ref: 'file'
+        ref: 'File'
     }
 });
 
