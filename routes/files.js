@@ -102,6 +102,7 @@ router.post('/uploads', isLoggedIn,catchAsync( async (req,response) => {
                     var mapMgt = new Map();
                     files.forEach(function(item){
                         mapMgt.set(JSON.stringify(item), item)
+                        //console.log(item, 'item[]');
                     })
                     const uniqueUsers = [...mapMgt.values()];
                     // looping through all the contents 
